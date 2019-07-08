@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
 import classnames from "classnames";
 import { registerUser } from "../../actions/authActions";
 import { connect } from "react-redux";
+import TextFieldGroup from "../common/TextFieldGroup";
 
 class Register extends Component {
   state = {
@@ -14,6 +14,12 @@ class Register extends Component {
     password2: "",
     errors: {}
   };
+
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
@@ -53,75 +59,48 @@ class Register extends Component {
                 Create your DevConnector account
               </p>
               <form onSubmit={this.onSubmit}>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className={classnames("form-control form-control-lg", {
-                      "is-invalid": errors.name
-                    })}
-                    placeholder="Name"
-                    name="name"
-                    value={this.state.name}
-                    onChange={this.onChange}
-                  />
-                  {errors.name && (
-                    <div className="invalid-feedback">{errors.name}</div>
-                  )}
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      name="email"
-                      onChange={this.onChange}
-                      value={this.state.email}
-                      placeholder="Email Address"
-                      className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.email
-                      })}
-                    />
-                    {errors.email && (
-                      <div className="invalid-feedback">{errors.email}</div>
-                    )}
-                    <small className="form-text text-muted">
-                      This site uses Gravatar so if you want a profile image,
-                      use a Gravatar email
-                    </small>
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="password"
-                      name="password"
-                      onChange={this.onChange}
-                      value={this.state.password}
-                      placeholder="Password"
-                      className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.password
-                      })}
-                    />
-                    {errors.password && (
-                      <div className="invalid-feedback">{errors.password}</div>
-                    )}
-                  </div>
-                  <div className="form-group">
-                    <input
-                      type="password"
-                      name="password2"
-                      onChange={this.onChange}
-                      value={this.state.password2}
-                      placeholder="Confirm Password"
-                      className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.password2
-                      })}
-                    />
-                    {errors.password2 && (
-                      <div className="invalid-feedback">{errors.password2}</div>
-                    )}
-                  </div>
-                  <input
-                    type="submit"
-                    value="Submit"
-                    className="btn btn-info btn-block mt-4"
-                  />
-                </div>
+                <TextFieldGroup
+                  placeholder="Name"
+                  name="name"
+                  value={this.state.name}
+                  onChange={this.onChange}
+                  error={errors.name}
+                />
+
+                <TextFieldGroup
+                  placeholder="Email Address"
+                  name="email"
+                  type="email"
+                  value={this.state.email}
+                  onChange={this.onChange}
+                  error={errors.email}
+                  info="This site uses Gravatar so if you want a profile image, use
+                  a Gravatar email"
+                />
+
+                <TextFieldGroup
+                  placeholder="Password"
+                  name="password"
+                  type="password"
+                  value={this.state.password}
+                  onChange={this.onChange}
+                  error={errors.password}
+                />
+
+                <TextFieldGroup
+                  placeholder="Confirm Password"
+                  name="password2"
+                  type="password"
+                  value={this.state.password2}
+                  onChange={this.onChange}
+                  error={errors.password2}
+                />
+
+                <input
+                  type="submit"
+                  value="Submit"
+                  className="btn btn-info btn-block mt-4"
+                />
               </form>
             </div>
           </div>
