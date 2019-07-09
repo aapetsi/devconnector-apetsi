@@ -1,29 +1,36 @@
-import axios from "axos";
+import axios from "axios";
 
-import { GET_ERRORS, GET_PROFILE, PROFILE_LOADING } from "./types";
+import { GET_PROFILE, PROFILE_LOADING, CLEAR_CURRENT_PROFILE } from "./types";
 
 // get current profile
-export const getCurrentProfile = () => {
-  dispatchEvent(setProfileLoading());
+export const getCurrentProfile = () => dispatch => {
+  dispatch(setProfileLoading());
   axios
     .get("http://localhost:5000/api/profile")
-    .then(res => {
+    .then(res =>
       dispatch({
         type: GET_PROFILE,
         payload: res.data
-      });
-    })
-    .catch(err => {
+      })
+    )
+    .catch(err =>
       dispatch({
         type: GET_PROFILE,
         payload: {}
-      });
-    });
+      })
+    );
 };
 
 // profile loading
 export const setProfileLoading = () => {
   return {
     type: PROFILE_LOADING
+  };
+};
+
+// clear profile
+export const clearCurrentProfile = () => {
+  return {
+    type: CLEAR_CURRENT_PROFILE
   };
 };
